@@ -407,8 +407,12 @@ type FullNode interface {
 	// can issue. It takes the deal size and verified status as parameters.
 	StateDealProviderCollateralBounds(context.Context, abi.PaddedPieceSize, bool, types.TipSetKey) (DealCollateralBounds, error)
 
-	// StateCirculatingSupply returns the circulating supply of Filecoin at the given tipset
+	// StateCirculatingSupply returns an approximation of the circulating supply of Filecoin at the given tipset.
+	// This is the value used by the protocol when calculating pledge collateral.
 	StateCirculatingSupply(context.Context, types.TipSetKey) (CirculatingSupply, error)
+	// StateExactCirculatingSupply returns the exact circulating supply of Filecoin at the given tipset.
+	// This is not used anywhere in the protocol itself, and is only for external consumption.
+	StateExactCirculatingSupply(context.Context, types.TipSetKey) (abi.TokenAmount, error)
 	// StateNetworkVersion returns the network version at the given tipset
 	StateNetworkVersion(context.Context, types.TipSetKey) (network.Version, error)
 
