@@ -26,7 +26,6 @@ const (
 	DrandTestnet
 	DrandDevnet
 	DrandLocalnet
-	DrandIncentinet
 )
 
 var DrandConfigs = map[DrandEnum]dtypes.DrandConfig{
