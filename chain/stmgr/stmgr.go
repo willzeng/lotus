@@ -1264,6 +1264,9 @@ func (sm *StateManager) GetCirculatingSupply(ctx context.Context, height abi.Cha
 }
 
 func (sm *StateManager) GetExactCirculatingSupply(ctx context.Context, height abi.ChainEpoch, st *state.StateTree) (abi.TokenAmount, error) {
+
+	fmt.Println("Aasyus style: ")
+	fmt.Println(sm.GetAayushCirculatingSupply(ctx, st))
 	circ := big.Zero()
 	unCirc := big.Zero()
 	err := st.ForEach(func(a address.Address, actor *types.Actor) error {
@@ -1346,6 +1349,86 @@ func (sm *StateManager) GetExactCirculatingSupply(ctx context.Context, height ab
 	}
 
 	return circ, nil
+}
+
+func (sm *StateManager) GetAayushCirculatingSupply(ctx context.Context, st *state.StateTree) (abi.TokenAmount, error) {
+
+	/*
+		case a == _init.Address ||
+		a == reward.Address ||
+		a == verifreg.Address ||
+		// The power actor itself should never receive funds
+		a == power.Address ||
+		a == builtin.SystemActorAddr ||
+		a == builtin.CronActorAddr ||
+		a == builtin.BurntFundsActorAddr ||
+		a == builtin.SaftAddress ||
+		a == builtin.ReserveAddress:
+	*/
+
+	circ := types.TotalFilecoinInt
+
+	iact, err := st.GetActor(_init.Address)
+	if err != nil {
+		return types.EmptyInt, err
+	}
+	circ = big.Sub(circ, iact.Balance)
+
+	ract, err := st.GetActor(reward.Address)
+	if err != nil {
+		return types.EmptyInt, err
+	}
+	circ = big.Sub(circ, ract.Balance)
+
+	vact, err := st.GetActor(verifreg.Address)
+	if err != nil {
+		return types.EmptyInt, err
+	}
+	circ = big.Sub(circ, vact.Balance)
+
+	pact, err := st.GetActor(power.Address)
+	if err != nil {
+		return types.EmptyInt, err
+	}
+	circ = big.Sub(circ, pact.Balance)
+
+	sact, err := st.GetActor(builtin.SystemActorAddr)
+	if err != nil {
+		return types.EmptyInt, err
+	}
+	circ = big.Sub(circ, sact.Balance)
+
+	cact, err := st.GetActor(builtin.CronActorAddr)
+	if err != nil {
+		return types.EmptyInt, err
+	}
+	circ = big.Sub(circ, cact.Balance)
+
+	bact, err := st.GetActor(builtin.BurntFundsActorAddr)
+	if err != nil {
+		return types.EmptyInt, err
+	}
+	circ = big.Sub(circ, bact.Balance)
+
+	reserved, err := st.GetActor(builtin.ReserveAddress)
+	if err != nil {
+		return types.EmptyInt, err
+	}
+	circ = big.Sub(circ, reserved.Balance)
+
+	locked, err := sm.GetFilLocked(ctx, st)
+	if err != nil {
+		return types.EmptyInt, err
+	}
+
+	circ = big.Sub(circ, locked)
+
+	// SAFT: Hardcode this
+	saft := big.Mul(big.NewInt(200_000_000), big.NewInt(int64(build.FilecoinPrecision)))
+	circ = big.Sub(circ, saft)
+
+	otherVests := big.Mul(big.NewInt(400_000_000), big.NewInt(int64(build.FilecoinPrecision)))
+	return big.Sub(circ, otherVests), nil
 }
 
 func (sm *StateManager) GetNtwkVersion(ctx context.Context, height abi.ChainEpoch) network.Version {
