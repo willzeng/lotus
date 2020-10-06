@@ -3007,7 +3007,8 @@ Response:
 ```
 
 ### StateCirculatingSupply
-StateCirculatingSupply returns the circulating supply of Filecoin at the given tipset
+StateCirculatingSupply returns an approximation of the circulating supply of Filecoin at the given tipset.
+This is the value used by the protocol when calculating pledge collateral.
 
 
 Perms: read
@@ -3102,8 +3103,8 @@ Response:
 ```
 
 ### StateExactCirculatingSupply
-TODO: Remove StateCirculatingSupply maybe?
-StateExactCirculatingSupply returns the exact circulating supply of Filecoin at the given tipset
+StateExactCirculatingSupply returns the exact circulating supply of Filecoin at the given tipset.
+This is not used anywhere in the protocol itself, and is only for external consumption.
 
 
 Perms: read
