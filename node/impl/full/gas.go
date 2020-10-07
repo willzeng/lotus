@@ -203,7 +203,7 @@ func (a *GasAPI) GasEstimateMessageGas(ctx context.Context, msg *types.Message, 
 	}
 
 	if msg.GasPremium == types.EmptyInt || types.BigCmp(msg.GasPremium, types.NewInt(0)) == 0 {
-		gasPremium, err := a.GasEstimateGasPremium(ctx, 2, msg.From, msg.GasLimit, types.TipSetKey{})
+		gasPremium, err := a.GasEstimateGasPremium(ctx, 10, msg.From, msg.GasLimit, types.TipSetKey{})
 		if err != nil {
 			return nil, xerrors.Errorf("estimating gas price: %w", err)
 		}
