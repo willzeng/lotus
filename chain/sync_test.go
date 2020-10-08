@@ -223,7 +223,7 @@ func (tu *syncTestUtil) addSourceNode(gen int) {
 
 	// TODO: Don't ignore stop
 	_, err := node.New(tu.ctx,
-		node.FullAPI(&out),
+		node.FullAPI(&out, false),
 		node.Online(),
 		node.Repo(sourceRepo),
 		node.MockHost(tu.mn),
@@ -255,7 +255,7 @@ func (tu *syncTestUtil) addClientNode() int {
 
 	// TODO: Don't ignore stop
 	_, err := node.New(tu.ctx,
-		node.FullAPI(&out),
+		node.FullAPI(&out, false),
 		node.Online(),
 		node.Repo(repo.NewMemory(nil)),
 		node.MockHost(tu.mn),
