@@ -33,7 +33,7 @@ The main branches under development at the moment are:
 
 ### Tracker
 
-All work is tracked via issues. An attempt at keeping an up-to-date view on remaining work towards Mainnet launch can be seen at the [lotus github project board](https://github.com/orgs/filecoin-project/projects/8). The issues labeled with `incentives` are there to identify the issues needed for Space Race launch.
+All work is tracked via issues. The issues labeled with `incentives` are there to identify the issues needed for Space Race launch.
 
 ### Packages
 
